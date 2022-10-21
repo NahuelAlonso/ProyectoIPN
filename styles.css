@@ -1,0 +1,212 @@
+/*
+(Mirar otras páginas; https://www.sweetvictorian.com.ar/, https://ar.isadoraonline.com/, "sobre plataforma iPN. Todos los derechos Reservados")
+No hace falta que sea responsive en el eje y
+
+login responsive (¿Cómo?)
+
+Botón de comprar ¿Qué hace?
+
+Filtrado en mobile
+
+Poner imagenes
+Al hacer hover en una artículo, muestra otra imágen
+*/
+
+:root{
+    --primary: #ff4000;
+}
+
+* {
+    font-family: 'Jost', 'Manrope','Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+
+.fa-google{
+    background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.round {
+    position: relative;
+    width: fit-content;
+}
+
+.round label {
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 28px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 28px;
+    border-color: black;
+}
+
+.round label:after {
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    content: "";
+    height: 6px;
+    left: 7px;
+    opacity: 0;
+    position: absolute;
+    top: 8px;
+    transform: rotate(-45deg);
+    width: 12px;
+}
+
+.round input[type="checkbox"] {
+    visibility: hidden;
+}
+
+.round input[type="checkbox"]:checked + label:after {
+    opacity: 1;
+}
+
+a:hover:not(.not-hover),
+button:hover:not(.not-hover),
+input[type='submit']:hover:not(.checkbox-round),
+input[type='range']::-webkit-slider-thumb:hover {
+    background-color: var(--primary);
+    cursor: pointer;
+}
+
+input[type='checkbox'] {
+    accent-color: black;
+}
+
+input[type='checkbox']:hover {
+    accent-color: var(--primary);
+}
+
+.circle{
+    display: inline-block;
+    border: 1px solid black;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    height: 1em;
+    width: 1em;
+}
+
+.navbar, footer{
+    min-height: 5rem;
+    max-height: 8rem;
+}
+.search{
+    border: 1px solid white !important;
+    border-radius: 6px !important;
+}
+.filter-border{
+    border: 2px solid gray !important;
+    border-radius: 0 10px 10px 0 !important;
+}
+
+input[type='range'] {
+    width: 100%;
+    height: 30px;
+    overflow: hidden;
+    cursor: pointer;
+    outline: none;
+}
+.text-responsive-modal{
+    font-size: min(3vh, 3vw);
+}
+
+
+@media (max-width: 640px) {
+    #modalName{
+        font-size: 6vw;
+    }
+    .modal-dialog{
+        width: 90% !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* @media (max-width: 800px) and (min-width: 650px) {
+    .text-responsive-filter{
+        font-size: 0.8em;
+    }
+}
+@media (max-width: 649px) and (min-width: 575px) {
+    .text-responsive-filter{
+        font-size: 0.7em;
+    }
+} */
+
+@media (max-width: 580px) and (min-width: 576px) {
+    #navbarLeft a h2 i{
+        font-size: 0.9em;
+    }
+}
+@media (min-width: 990px){
+    .card-title{
+        font-size: 1.8vw;
+    }
+}
+input[type='range'],
+input[type='range']::-webkit-slider-runnable-track,
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: none;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 1px;
+    background: black;
+}
+
+input[type='range']:nth-child(2)::-webkit-slider-runnable-track{
+    background: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+    position: relative;
+    height: 15px;
+    width: 15px;
+    margin-top: -7px;
+    background: black;
+    border-radius: 25px;
+    z-index: 1;
+}
+
+input[type='range']:nth-child(1)::-webkit-slider-thumb{
+    z-index: 2;
+}
+
+.rangeslider input{
+    position: absolute;
+}
+
+.rangeslider .right{
+    position: relative;
+    float: right;
+    margin-right: -5px;
+}
+
+.rangeslider .left{
+    position: relative;
+    float: left;
+    margin-left: -5px;
+}
+
+ 
+.rangeslider{
+    position: relative;
+    height: 60px;
+    width: 100%;
+    display: block;
+    margin: -5px auto -5px auto;
+}
+.rangeslider span{
+    position:relative;
+    margin-top: 30px;
+    left: 0;
+}
