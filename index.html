@@ -37,8 +37,8 @@
                     <input class="form-control mr-sm-2 m-0" type="search" placeholder="Buscar..." aria-label="Search">
                 </form>
                 <a id="searchButton" class="d-none d-sm-inline btn text-dark px-1 py-0 my-auto" type="submit"><h2 class="my-0"><i class="fa fa-search"></i></h2></a>
-                <a class="btn text-dark px-1 py-0 my-auto" href="./login/login.html"><h2 class="my-0"><i class="fa fa-user"></i></h2></a>
-                <a class="btn text-dark px-1 py-0 my-auto" data-html="true" data-toggle="popover" data-placement="bottom" title="Productos a comprar" data-content="" data-trigger="hover">
+                <a class="btn text-dark px-1 py-0 my-auto" href="./login.html"><h2 class="my-0"><i class="fa fa-user"></i></h2></a>
+                <a class="btn text-dark px-1 py-0 my-auto" data-html="true" data-toggle="popover" data-placement="bottom" title="Productos a comprar" data-content="" data-trigger="click">
                     <h2 class="my-0"><i class="fa fa-shopping-cart"></i></h2>
                 </a>
                 <script>
@@ -148,24 +148,32 @@
                         </div>
                     </div>
                 </section>
+                <h3 id="errorMessage" style="text-align: center;color: red">No se encontró ningún artículo. Modifique sus filtros.</h3>
+            </div>
+        </section>
+        
+        <!-- Mensaje de compra -->
+        <section>
+            <div id="alert" class="alert alert-success alert-dismissible" style="position: fixed; bottom: 3rem; right: 0; z-index: 3;">
+                ¡El producto se agregó a su carrito!
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="bg-dark text-center text-white w-100 position-relative h-auto bottom-0">
+        <footer class="bg-dark text-center text-white w-100 position-relative h-auto bottom-0" style="position:absolute; bottom: 0;">
             <div class="container p-1">
                 <h3 class="m-auto">Contactanos</h3>
                 <section class="m-auto">
-                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/" role="button">
                         <i class="fa fa-facebook-f"></i>
                     </a>
-                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/" role="button">
                         <i class="fa fa-instagram"></i>
                     </a>
-                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.twitter.com/" role="button">
                         <i class="fa fa-twitter"></i>
                     </a>
-                    <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://web.whatsapp.com/" role="button">
                         <i class="fa fa-whatsapp"></i>
                     </a>
                 </section>
@@ -181,7 +189,7 @@
         
                     <div class="col-md-5 col-12 p-0 m-0-auto-0-auto">
                         <div class="form-outline form-white mb-0">
-                            <input type="email" id="form5Example21" class="form-control" placeholder="Ingrese su email" />
+                            <input type="email" class="form-control" placeholder="Ingrese su email" />
                         </div>
                     </div>
         

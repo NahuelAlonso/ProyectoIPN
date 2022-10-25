@@ -21,14 +21,17 @@ const articles = [
     { id: 19, type: 'scarf', size: '190x45 cm', release: '1/2/2021', soldUnits: 9, fabrics: '100% Lana', price: 15020, sale: 0, name: 'Bufanda Pompón', colors: 'negro', washing: ['Lavar a máquina max. 40°C', 'No usar lejía ni blanqueador', 'No limiar en seco', 'Planchar máx. 110°C'] },
     { id: 20, type: 'scarf', size: '190x45 cm', release: '1/8/2022', soldUnits: 8, fabrics: '100% Lana', price: 15020, sale: 0.1, name: 'Bufanda Hufflepuff', colors: 'negro, rojo', washing: ['Lavar a máquina max. 40°C', 'No usar lejía ni blanqueador', 'No limiar en seco', 'Planchar máx. 110°C'] }
 ];//articles = {id, type, size, release, soldUnits, fabrics, price, sale, name, colors, washing}
+Object.freeze(articles);
 
 const trends = [
     {id: 'winter', name: 'Invierno', articles: [0, 3, 4, 5, 8, 10, 11, 15]},//8
     {id: 'summer', name: 'Verano', articles: [1, 6, 7, 9, 12, 15]},//6
     {id: 'spring', name: 'Primavera', articles: [2, 3, 4, 19, 17, 18, 13, 14]},//8
 ];
+Object.freeze(trends);
 
 let articleTemplate;//Plantilla de los artículos
+let nothingFound;//Plantilla de texto con error de "ningún artículo coincide"
 let filters = { type: undefined, min: undefined, max: undefined, search: '', colors: []};
 let sorting = 'id';//Puede ser soldUnits, release, price o id
 let shoppingCart = [];//Tiene todas las unidades a comprar, con los atributos 'id', 'cantidad' y 'color'
@@ -75,42 +78,42 @@ const sort = (list, sorting) => {//Devuelve una lista ordenada de su argumento, 
 const showArticles = (list) => {//Crea una tarjeta html con los detalles de cada artículo dentro de list
     list = sort(list.slice(), sorting);//Ordena la lista de los artículos debidos
     console.log(list);
-    list.forEach((article) => {
-        let id = article.id;
-        let newElement = articleTemplate.clone();
-        newElement.find(".card-img-top").attr('src', `./images/products/${id}${article.name.toLowerCase().replace(/\s/g, '-')}.jpeg`);//Se cambia la imagen
-        newElement.find(".card-img-top").attr({'alt': 'Foto de ' + article.name, 'id': 'image' + id});//Se cambia el alt de la img
-        newElement.find(".card-title").text(article.name);//Se cambia el nombre
-        newElement.find(".card-text").text(getNumber(Math.round(article.price * (1 - article.sale))));//Se cambia el precio
-        newElement.find("#buy").attr('id', 'buyButton' + article.id);//Se cambia el id del botón de comprar
-        newElement.find(".art-counter").children().attr('id', 'counter' + article.id);
-        if(shoppingCart.filter((purchase) => purchase.id == article.id)[0])
-            newElement.find(".art-counter").children().text(shoppingCart.filter((purchase) => purchase.id == article.id)[0].quantity);
-        newElement.find(".art-counter").on('DOMSubtreeModified', () => {
+    if(list.length !== 0){
+        $("#errorMessage").remove();
+        list.forEach((article) => {
+            let id = article.id;
+            let newElement = articleTemplate.clone();
+            newElement.find(".card-img-top").attr('src', `./images/products/${id}${article.name.toLowerCase().replace(/\s/g, '-')}.jpeg`);//Se cambia la imagen
+            newElement.find(".card-img-top").attr({'alt': 'Foto de ' + article.name, 'id': 'image' + id});//Se cambia el alt de la img
+            newElement.find(".card-title").text(article.name);//Se cambia el nombre
+            newElement.find(".card-text").text(getNumber(Math.round(article.price * (1 - article.sale))));//Se cambia el precio
+            newElement.find("#buy").attr('id', 'buyButton' + article.id);//Se cambia el id del botón de comprar
+            newElement.find(".art-counter").children().attr('id', 'counter' + article.id);
+            if(shoppingCart.filter((purchase) => purchase.id == article.id)[0])
+                newElement.find(".art-counter").children().text(shoppingCart.filter((purchase) => purchase.id == article.id)[0].quantity);
+            newElement.find(".art-counter").on('DOMSubtreeModified', () => {
+                if(newElement.find(".art-counter").text().replace(/\s/g, '') == '0')
+                    newElement.find(".art-counter").hide();
+                else
+                    newElement.find(".art-counter").show();
+            });
             if(newElement.find(".art-counter").text().replace(/\s/g, '') == '0')
                 newElement.find(".art-counter").hide();
             else
                 newElement.find(".art-counter").show();
+            newElement.appendTo("#catalog");
         });
-        if(newElement.find(".art-counter").text().replace(/\s/g, '') == '0')
-            newElement.find(".art-counter").hide();
-        else
-            newElement.find(".art-counter").show();
-        newElement.appendTo("#catalog");
-    })
+    }
+    else
+        nothingFound.clone().appendTo("#catalog");
 };
 
 const filter = () => {//Devuelve una lista de los artículos que coinciden con filters
-    let first = true;
     return articles.filter((article) => {
         let searchRegex = new RegExp(filters.search, 'i');
         let hasColor = article.colors.split(', ').some((color) => {
-            if(first)
-                console.log(filters.colors.indexOf(color) !== -1);
             return filters.colors.indexOf(color) !== -1;
         });
-        if(first)
-            first = false;
         return (
             (!filters.type || filters.type === article.type) &&
             (!filters.min || filters.min < Math.round(article.price * (1 - article.sale))) &&
@@ -217,6 +220,11 @@ const updateCart = {//Objeto con dos attb; 'add' añade un objeto al carrito y '
         // }
         $("[data-toggle='popover']").attr('data-content',
             shoppingCart.reduce((str, art) => `${str}<p class="m-1">${articles[art.id].name}   x${art.quantity}</p>`, ''));
+        $("#alert").show();
+        setTimeout(() => {
+            $("#alert").hide();
+        }, 2000);
+            
     },
     'delete': (articleId) => {//Número
         let ids = shoppingCart.map((art) => art.id);
@@ -233,13 +241,31 @@ const updateCart = {//Objeto con dos attb; 'add' añade un objeto al carrito y '
     }
 }
 
+const checkCredentials = () => {
+    if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test($("#mailInput").val()))
+        $("#mailError").hide();
+    else
+        $("#mailError").show();
+
+    if($("#passwordInput").val().length >= 8)
+        $("#passwordError").hide();
+    else
+        $("#passwordError").show();
+
+}
 
 $(document).ready(function () {//Se ejecuta al estar el documento listo
-    Object.freeze(articles);
+    
     articleTemplate = $(".card").clone();//Se guarda un clon del original en la variable articleTemplate
     $(".card").remove();//Y se lo elimina
+    nothingFound = $("#errorMessage").clone();//Se repite el proceso con el erorr de no encotrado
+    $("#errorMessage").remove();
     showArticles(articles);//Se muestran todos los artículos
-
+    
+    $("#mailError").hide();
+    $("#passwordError").hide();
+    $("#alert").hide();
+    
     //Input tipo range
     var sortedByPrice = sort(articles.slice(), 'actualPrice');
     const minPrice = sortedByPrice[0].price, maxPrice = sortedByPrice[sortedByPrice.length - 1].price;    
